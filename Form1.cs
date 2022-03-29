@@ -136,34 +136,27 @@ namespace ETS2_DualSenseAT_Mod
             p.instructions = new Instruction[4];
 
             int ammo = memLib.ReadInt("re5dx9.exe+00E243B4,38C,110");
-            ammoLbl.Text = "iAmmo: " + ammo;
-            // MyIni.Write("RightTrigger", "Resistance");
-            //MyIni.Write("LeftTrigger", "Resistance");
-            // MyIni.Write("ForceLeftTrigger", "(4)(2)");
 
             p.instructions[0].type = InstructionType.TriggerUpdate;
             p.instructions[0].parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.Rigid, 50, 76, 93, 125, 150, 174, 199 }; //(50)(76)(93)(125)(150)(174)(199)
 
-            if (ammo > 0)
+            //If Ammo Tracker is checked, work
+            if (iAmmoTracker.Checked)
             {
-                p.instructions[0].type = InstructionType.TriggerUpdate;
-                p.instructions[0].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, 6, 4 };
+                if (ammo > 0)
+                {
+                    p.instructions[0].type = InstructionType.TriggerUpdate;
+                    p.instructions[0].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, 6, 4 };
 
-              // p.instructions[1].type = InstructionType.TriggerUpdate;
-               // p.instructions[1].parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.Resistance, 0, 3 }; //(50)(76)(93)(125)(150)(174)(199)
-
-
-
-            }
-            else
-            {
-                p.instructions[1].type = InstructionType.TriggerUpdate;
-                p.instructions[1].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal };
+                }
+                else
+                {
+                    p.instructions[1].type = InstructionType.TriggerUpdate;
+                    p.instructions[1].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal };
+                }
             }
 
-            // Controller.WriteController.SetRightTrigger(Controller.Types.Normal);
-
-            Console.WriteLine("Ammo: " + ammo);
+            //Debug shows data
             ammoLbl.Text = "Ammo: " + ammo;
 
             Send(p);
