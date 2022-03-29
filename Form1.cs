@@ -131,29 +131,36 @@ namespace ETS2_DualSenseAT_Mod
         private void RE5DynamicTriggers()
         {
             Packet p = new Packet();
-
+            int inst_index = 0;
             int controllerIndex = 0;
             p.instructions = new Instruction[4];
 
             int ammo = memLib.ReadInt("re5dx9.exe+00E243B4,38C,110");
 
-            p.instructions[0].type = InstructionType.TriggerUpdate;
-            p.instructions[0].parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.Rigid, 50, 76, 93, 125, 150, 174, 199 }; //(50)(76)(93)(125)(150)(174)(199)
-
+            p.instructions[inst_index].type = InstructionType.TriggerUpdate;
+            p.instructions[inst_index].parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.CustomTriggerValue, CustomTriggerValueMode.Rigid, 50, 76, 93, 125, 150, 174, 199 }; //(50)(76)(93)(125)(150)(174)(199)
+            inst_index += +1;
             //If Ammo Tracker is checked, work
             if (iAmmoTracker.Checked)
             {
                 if (ammo > 0)
                 {
-                    p.instructions[0].type = InstructionType.TriggerUpdate;
-                    p.instructions[0].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, 6, 4 };
-
+                    p.instructions[inst_index].type = InstructionType.TriggerUpdate;
+                    p.instructions[inst_index].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, 6, 4 };
+                    inst_index += +1;
                 }
                 else
                 {
-                    p.instructions[1].type = InstructionType.TriggerUpdate;
-                    p.instructions[1].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal };
+                    p.instructions[inst_index].type = InstructionType.TriggerUpdate;
+                    p.instructions[inst_index].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal };
+                    inst_index += +1;
                 }
+            }
+            else
+            {
+                p.instructions[inst_index].type = InstructionType.TriggerUpdate;
+                p.instructions[inst_index].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal };
+                inst_index += +1;
             }
 
             //Debug shows data
