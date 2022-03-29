@@ -69,7 +69,6 @@
             this.ammoLbl.Size = new System.Drawing.Size(90, 13);
             this.ammoLbl.TabIndex = 2;
             this.ammoLbl.Text = "Bullets: Unknown";
-            this.ammoLbl.Visible = false;
             // 
             // everytick
             // 

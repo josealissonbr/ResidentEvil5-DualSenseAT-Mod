@@ -70,6 +70,7 @@ namespace ETS2_DualSenseAT_Mod
                 MessageBox.Show("Failed to connect to the DSX UDP Server ("+ Triggers.localhost, Convert.ToInt32(File.ReadAllText(@"C:\Temp\DualSenseX\DualSenseX_PortNumber.txt")) + ")");
             }
 
+            findProcessID("re5dx9");
 
             timer1.Enabled = true;
 
@@ -77,7 +78,7 @@ namespace ETS2_DualSenseAT_Mod
            // processOpen = memLib.OpenProcess(processID);
 
             //Call static triggers values;
-            gameStaticTriggerValues();
+            //gameStaticTriggerValues();
 
         }
 
@@ -134,7 +135,8 @@ namespace ETS2_DualSenseAT_Mod
             int controllerIndex = 0;
             p.instructions = new Instruction[4];
 
-            int ammo = memLib.ReadInt("re5dx9.exe+00E243B4,130,0,1C,0,5C,8,38C");
+            int ammo = memLib.ReadInt("re5dx9.exe+00E243B4,38C,110");
+            ammoLbl.Text = "iAmmo: " + ammo;
             // MyIni.Write("RightTrigger", "Resistance");
             //MyIni.Write("LeftTrigger", "Resistance");
             // MyIni.Write("ForceLeftTrigger", "(4)(2)");
@@ -145,19 +147,22 @@ namespace ETS2_DualSenseAT_Mod
             if (ammo > 0)
             {
                 p.instructions[0].type = InstructionType.TriggerUpdate;
-                p.instructions[0].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Hard};
+                p.instructions[0].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.AutomaticGun, 0, 6, 4 };
 
-               
-                //Controller.WriteController.SetRightTrigger(Controller.Types.Hard);
-                //  MyIni.Write("RightTrigger", "SemiAutomaticGun");
-                // MyIni.Write("ForceLeftTrigger", "(2)(5)(2)");
+              // p.instructions[1].type = InstructionType.TriggerUpdate;
+               // p.instructions[1].parameters = new object[] { controllerIndex, Trigger.Left, TriggerMode.Resistance, 0, 3 }; //(50)(76)(93)(125)(150)(174)(199)
+
+
+
             }
             else
             {
                 p.instructions[1].type = InstructionType.TriggerUpdate;
                 p.instructions[1].parameters = new object[] { controllerIndex, Trigger.Right, TriggerMode.Normal };
             }
-               // Controller.WriteController.SetRightTrigger(Controller.Types.Normal);
+
+            // Controller.WriteController.SetRightTrigger(Controller.Types.Normal);
+
             Console.WriteLine("Ammo: " + ammo);
             ammoLbl.Text = "Ammo: " + ammo;
 
